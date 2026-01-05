@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Happy 16th Birthday Anita❤️</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:radial-gradient(circle at top,#2b2b3a,#5b5c99);
+  font-family:'Segoe UI',Tahoma,sans-serif;
+  color:#fff;
+}
+
+/* BACKGROUND STARS */
+.star-bg{
+  position:absolute;
+  width:2px;
+  height:2px;
+  background:white;
+  border-radius:50%;
+  opacity:.6;
+  animation:twinkle 6s infinite ease-in-out;
+}
+@keyframes twinkle{
+  50%{opacity:.2}
+}
+
+/* CARDS */
+.card{
+  background:rgba(35,35,55,.9);
+  padding:50px 60px;
+  border-radius:18px;
+  box-shadow:0 0 50px rgba(200,180,255,.3);
+  text-align:center;
+  z-index:2;
+  transition:opacity 1.5s;
+}
+.fade-out{opacity:0}
+
+h1{font-size:2.6rem}
+h2{color:#e0b3ff}
+
+.age{
+  font-size:4.5rem;
+  color:#ffc3e0;
+  text-shadow:0 0 20px #ff99cc;
+  animation:glow 2.5s infinite;
+}
+@keyframes glow{50%{text-shadow:0 0 60px #ff99cc}}
+
+.message{max-width:450px;line-height:1.8;white-space:pre-wrap}
+
+.cursor{animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0}}
+
+.profile-pic{
+  width:200px;height:200px;
+  border-radius:50%;
+  border:4px solid #ffc3e0;
+  box-shadow:0 0 30px #54358d;
+  animation:picGlow 2.5s infinite;
+}
+@keyframes picGlow{50%{box-shadow:0 0 70px #ffc3e0}}
+
+/* CONFETTI / HEARTS / STARS */
+.confetti{
+  position:absolute;
+  pointer-events:none;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  from{transform:translateY(-10px) rotate(0)}
+  to{transform:translateY(110vh) rotate(360deg)}
+}
+
+/* FLOATING HEARTS ON TAP */
+.tap-heart{
+  position:absolute;
+  pointer-events:none;
+  animation:floatUp 2s forwards;
+}
+@keyframes floatUp{
+  from{opacity:1;transform:translateY(0) scale(1)}
+  to{opacity:0;transform:translateY(-80px) scale(1.8)}
+}
+
+/* FIREWORKS */
+.firework{
+  position:absolute;
+  width:6px;
+  height:6px;
+  border-radius:50%;
+  background:hsl(var(--hue),100%,60%);
+  animation:explode 1s forwards;
+}
+@keyframes explode{
+  to{transform:translate(var(--x),var(--y));opacity:0}
+}
+
+/* FUTURISTIC BUTTON */
+#cornerBtn{
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  width:58px;height:58px;
+  border-radius:50%;
+  border:none;
+  background:radial-gradient(circle,#ffb3d9,#ff80b3);
+  box-shadow:0 0 25px #ff99cc,inset 0 0 10px #fff;
+  cursor:pointer;
+  z-index:100;
+  animation:pulse 2.5s infinite;
+  transition:.8s;
+}
+#cornerBtn .ring{
+  position:absolute;inset:6px;
+  border:2px solid rgba(255,255,255,.7);
+  border-radius:50%;
+  animation:spin 6s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes pulse{50%{box-shadow:0 0 60px #ff99cc}}
+.hide-btn{opacity:0;transform:scale(.7);pointer-events:none}
+</style>
+</head>
+
+<body>
+
+<!-- STARS -->
+<script>
+for(let i=0;i<120;i++){
+  const s=document.createElement("div");
+  s.className="star-bg";
+  s.style.left=Math.random()*100+"vw";
+  s.style.top=Math.random()*100+"vh";
+  s.style.animationDuration=2+Math.random()*4+"s";
+  document.body.appendChild(s);
+}
+</script>
+
+<audio id="bgMusic" loop>
+  <source src="Timi_Dakolo_-_Everything_Amen__CeeNaija.com_.mp3">
+</audio>
+
+<div class="card" id="introCard">
+  <h1><span id="line1"></span><span class="cursor">|</span></h1>
+  <img src="Screenshot_20260103_203109_Video Player.jpg" class="profile-pic">
+  <h2 id="line2"></h2>
+  <div class="age">16</div>
+</div>
+
+<div class="card" id="messageCard" style="display:none">
+  <div class="message" id="message"></div>
+  <span class="cursor">|</span>
+</div>
+
+<button id="cornerBtn"><span class="ring"></span></button>
+
+<script>
+const introLines=[
+ {id:"line1",text:"Happy 16th Birthday 🥳"},
+ {id:"line2",text:"Anita 💛"}
+];
+
+const finalMessage=`💛 Happy Birthday Anita 💛
+I hope this isn’t too much. I just wanted to say congratulations on another year.
+
+I hope today reminds you how special and appreciated you are.
+Wishing you the happiest birthday ever.
+Praying for all Your Wishes to come 
+true.
+🎉 You truly deserve it 🎉
+❤️💙
+Have a really good day ✨
+✨🥳Happy Birthday🥳✨
+
+
+Brian
+🥳`;
+
+const music=document.getElementById("bgMusic");
+music.volume=.50;
+music.currentTime=48;
+
+let started=false,line=0,char=0,msgIndex=0;
+
+function typeIntro(){
+ if(line>=introLines.length) return setTimeout(fadeIntro,2000);
+ const el=document.getElementById(introLines[line].id);
+ if(char<introLines[line].text.length){
+  el.textContent+=introLines[line].text[char++];
+  setTimeout(typeIntro,90);
+ }else{char=0;line++;setTimeout(typeIntro,500)}
+}
+
+function fadeIntro(){
+ introCard.classList.add("fade-out");
+ setTimeout(()=>{
+  introCard.style.display="none";
+  messageCard.style.display="block";
+  typeMessage();
+  launchConfetti();
+  fireworks();
+ },1500);
+}
+
+function typeMessage(){
+ if(msgIndex<finalMessage.length){
+  message.textContent+=finalMessage[msgIndex++];
+  setTimeout(typeMessage,40);
+ }
+}
+
+function startExperience(){
+ if(!started){
+  music.play().catch(()=>{});
+  started=true;
+  typeIntro();
+  cornerBtn.classList.add("hide-btn");
+ }
+}
+document.addEventListener("click",startExperience);
+document.addEventListener("touchstart",startExperience);
+
+/* CONFETTI */
+function launchConfetti(){
+ setInterval(()=>{
+  const e=document.createElement("div");
+  e.className="confetti";
+  const r=Math.random();
+  e.textContent=r<.4?"🎉":r<.7?"❤️":"⭐";
+  e.style.fontSize=12+Math.random()*18+"px";
+  e.style.left=Math.random()*100+"vw";
+  e.style.animationDuration=3+Math.random()*2+"s";
+  document.body.appendChild(e);
+  setTimeout(()=>e.remove(),5000);
+ },150);
+}
+
+/* HEARTS ON TAP */
+document.addEventListener("click",e=>{
+ const h=document.createElement("div");
+ h.className="tap-heart";
+ h.textContent="💖";
+ h.style.left=e.clientX+"px";
+ h.style.top=e.clientY+"px";
+ document.body.appendChild(h);
+ setTimeout(()=>h.remove(),2000);
+});
+
+/* FIREWORKS */
+function fireworks(){
+ for(let i=0;i<30;i++){
+  const f=document.createElement("div");
+  f.className="firework";
+  f.style.left="50vw";
+  f.style.top="40vh";
+  f.style.setProperty("--x",(Math.random()-0.5)*200+"px");
+  f.style.setProperty("--y",(Math.random()-0.5)*200+"px");
+  f.style.setProperty("--hue",Math.random()*360);
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),1000);
+ }
+}
+</script>
+
+</body>
+</html>
+
+
+
