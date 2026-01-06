@@ -21,16 +21,13 @@ body{
 /* BACKGROUND STARS */
 .star-bg{
   position:absolute;
-  width:2px;
-  height:2px;
+  width:2px;height:2px;
   background:white;
   border-radius:50%;
   opacity:.6;
   animation:twinkle 6s infinite ease-in-out;
 }
-@keyframes twinkle{
-  50%{opacity:.2}
-}
+@keyframes twinkle{50%{opacity:.2}}
 
 /* CARDS */
 .card{
@@ -69,7 +66,7 @@ h2{color:#e0b3ff}
 }
 @keyframes picGlow{50%{box-shadow:0 0 70px #ffc3e0}}
 
-/* CONFETTI / HEARTS / STARS */
+/* CONFETTI */
 .confetti{
   position:absolute;
   pointer-events:none;
@@ -80,7 +77,7 @@ h2{color:#e0b3ff}
   to{transform:translateY(110vh) rotate(360deg)}
 }
 
-/* FLOATING HEARTS ON TAP */
+/* HEARTS */
 .tap-heart{
   position:absolute;
   pointer-events:none;
@@ -94,8 +91,7 @@ h2{color:#e0b3ff}
 /* FIREWORKS */
 .firework{
   position:absolute;
-  width:6px;
-  height:6px;
+  width:6px;height:6px;
   border-radius:50%;
   background:hsl(var(--hue),100%,60%);
   animation:explode 1s forwards;
@@ -104,36 +100,46 @@ h2{color:#e0b3ff}
   to{transform:translate(var(--x),var(--y));opacity:0}
 }
 
-/* FUTURISTIC BUTTON */
+/* GLOWING START BUTTON */
 #cornerBtn{
   position:fixed;
-  bottom:22px;
-  right:22px;
+  bottom:22px;right:22px;
   width:58px;height:58px;
   border-radius:50%;
   border:none;
   background:radial-gradient(circle,#ffb3d9,#ff80b3);
-  box-shadow:0 0 25px #ff99cc,inset 0 0 10px #fff;
+  box-shadow:0 0 20px #ff99cc;
   cursor:pointer;
   z-index:100;
-  animation:pulse 2.5s infinite;
+  animation:pulseGlow 1.6s infinite;
   transition:.8s;
 }
+
 #cornerBtn .ring{
-  position:absolute;inset:6px;
-  border:2px solid rgba(255,255,255,.7);
+  position:absolute;
+  inset:6px;
+  border:2px solid rgba(255,255,255,.8);
   border-radius:50%;
   animation:spin 6s linear infinite;
 }
+
 @keyframes spin{to{transform:rotate(360deg)}}
-@keyframes pulse{50%{box-shadow:0 0 60px #ff99cc}}
-.hide-btn{opacity:0;transform:scale(.7);pointer-events:none}
+@keyframes pulseGlow{
+  0%{box-shadow:0 0 15px #ff99cc}
+  50%{box-shadow:0 0 70px #ff99cc}
+  100%{box-shadow:0 0 15px #ff99cc}
+}
+
+.hide-btn{
+  opacity:0;
+  transform:scale(.6);
+  pointer-events:none;
+}
 </style>
 </head>
 
 <body>
 
-<!-- STARS -->
 <script>
 for(let i=0;i<120;i++){
   const s=document.createElement("div");
@@ -145,8 +151,8 @@ for(let i=0;i<120;i++){
 }
 </script>
 
-<audio id="bgMusic" loop>
-  <source src="Timi_Dakolo_-_Everything_Amen__CeeNaija.com_.mp3">
+<audio id="bgMusic" loop preload="auto">
+  <source src="Timi_Dakolo_-_Everything_Amen__CeeNaija.com_.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card" id="introCard">
@@ -161,7 +167,9 @@ for(let i=0;i<120;i++){
   <span class="cursor">|</span>
 </div>
 
-<button id="cornerBtn"><span class="ring"></span></button>
+<button id="cornerBtn" title="Tap to start 🎵">
+  <span class="ring"></span>🎵
+</button>
 
 <script>
 const introLines=[
@@ -180,7 +188,7 @@ Brian
 🥳`;
 
 const music=document.getElementById("bgMusic");
-music.volume=.100;
+music.volume=0.1;
 music.currentTime=48;
 
 let started=false,line=0,char=0,msgIndex=0;
@@ -213,23 +221,22 @@ function typeMessage(){
 }
 
 function startExperience(){
- if(!started){
-  music.play().catch(()=>{});
-  started=true;
-  typeIntro();
-  cornerBtn.classList.add("hide-btn");
- }
+ if(started) return;
+ started=true;
+ music.play().catch(()=>{});
+ typeIntro();
+ cornerBtn.classList.add("hide-btn");
 }
-document.addEventListener("click",startExperience);
-document.addEventListener("touchstart",startExperience);
+
+cornerBtn.addEventListener("click",startExperience);
+cornerBtn.addEventListener("touchstart",startExperience);
 
 /* CONFETTI */
 function launchConfetti(){
  setInterval(()=>{
   const e=document.createElement("div");
   e.className="confetti";
-  const r=Math.random();
-  e.textContent=r<.4?"🎉":r<.7?"❤️":"⭐";
+  e.textContent=Math.random()<.5?"🎉":"❤️";
   e.style.fontSize=12+Math.random()*18+"px";
   e.style.left=Math.random()*100+"vw";
   e.style.animationDuration=3+Math.random()*2+"s";
@@ -238,7 +245,7 @@ function launchConfetti(){
  },150);
 }
 
-/* HEARTS ON TAP */
+/* HEARTS */
 document.addEventListener("click",e=>{
  const h=document.createElement("div");
  h.className="tap-heart";
@@ -267,8 +274,3 @@ function fireworks(){
 
 </body>
 </html>
-
-
-
-
-
